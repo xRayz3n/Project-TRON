@@ -1,5 +1,5 @@
-
 import socket
+import class_game
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(('172.21.72.112', 8887))
