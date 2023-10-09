@@ -1,7 +1,7 @@
 import socket 
 
 sck = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sck.connect(('127.0.0.1', 8888))
+sck.connect(('172.21.72.112', 8887))
 
 print("Connected")
 
