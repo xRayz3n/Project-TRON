@@ -3,8 +3,9 @@ import threading
 import multiprocessing
 import class_game
 import player
+import os
+os.symlink('server', '../tools')
 import tools
-
 playerConnection_queue = multiprocessing.Queue()
 
 playerList = []
