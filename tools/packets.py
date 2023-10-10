@@ -69,11 +69,15 @@ class Packets:
     def send(self, target : socket):
         target.send(self.package)
 
+    def recup(target : socket.socket):
+        length = int.from_bytes(target.recv(4),'big')
+        return Packets.decode(target.recv(length))
+
     def decode(array : bytearray):
         print(array)
         match array[0].to_bytes(1,'big').decode("utf-8"):
             case "D":
-                return array[1].to_bytes(1,'big').decode("utf-8")
+                return ("D",array[1].to_bytes(1,'big').decode("utf-8"))
             case "M":
                 return
             case "I":
@@ -81,10 +85,10 @@ class Packets:
                 output = ""
                 for i in sentence :
                     output += str(i.to_bytes(1,'big'), "utf-8")
-                return output
+                return ("I",output)
             
             case "T":
-                return array[1]
+                return ("T",array[1])
             
 if __name__ == "__main__":
     encode1 = Packets(package_type="I", info = "bonjour je suis fou")
