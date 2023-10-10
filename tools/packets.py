@@ -30,7 +30,7 @@ class Packets:
     """
 
 
-    def __init__(self, *, package_type : str, info ) -> None:
+    def __init__(self, info , *, package_type : str) -> None:
         self.package_type = package_type
         self.info = info
 
