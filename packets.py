@@ -71,6 +71,7 @@ class Packets:
 
     def receive(target : socket.socket):
         length = int.from_bytes(target.recv(4),'big')
+
         return Packets.decode(target.recv(length))
 
     def decode(array : bytearray):
