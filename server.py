@@ -3,8 +3,7 @@ import threading
 import multiprocessing
 import class_game
 import player
-import os
-from tools import packets
+import packets
 playerConnection_queue = multiprocessing.Queue()
 playerList = []
 

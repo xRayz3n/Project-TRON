@@ -1,4 +1,5 @@
 import player
+
 class Game:
     def __init__(self,playersList : player.Player, map_size : tuple[int,int] = (100,100), speed : float = 1.0 ) -> None:
  
