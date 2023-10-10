@@ -37,6 +37,7 @@ class Game:
         self.speed = speed
         
     def update_positions(self, input : dict) -> None:
+
         for i in input.keys():
             
             if self.state_players[i] != "dead":
@@ -71,3 +72,4 @@ class Game:
     def You_are_dead(self, player : int):
         self.state_players[player-1] = "dead"
         #to do : send a message to the players that he is dead (to play animation + other triggers)
+
