@@ -4,10 +4,11 @@ import multiprocessing
 import class_game
 import player
 import os
-os.symlink('server', '../tools')
-import tools
+try:
+    os.symlink('server', '../tools')
+except: Exception
+from tools import packets
 playerConnection_queue = multiprocessing.Queue()
-
 playerList = []
 
 def OpenConnections(): #keeps the connection open
