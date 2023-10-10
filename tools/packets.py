@@ -67,7 +67,7 @@ class Packets:
         self.package = pack
 
     def send(self, target : socket):
-        socket.send(self.package)
+        target.send(self.package)
 
     def decode(array : bytearray):
         print(array)
