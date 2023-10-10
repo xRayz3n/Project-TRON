@@ -74,16 +74,16 @@ class Packets:
         return Packets.decode(target.recv(length))
 
     def decode(array : bytearray):
-        print(array)
         match array[0].to_bytes(1,'big').decode("utf-8"):
             case "D":
                 return ("D",array[1].to_bytes(1,'big').decode("utf-8"))
             
             case "M":
                 output = []
-                nb_cells = int.to_bytes(array[1:5],'big')
-                nb_rows = int.to_bytes(array[6:10],'big')
-
+                nb_cells = int.from_bytes(array[1:5],'big')
+                nb_rows = int.from_bytes(array[5:9],'big')
+                data = array[9:]
+                return ("M",[[data[i+j] for i in range(nb_rows)] for j in range(int(nb_cells/nb_rows))])
             
             case "I":
                 sentence = array[1::]
@@ -98,8 +98,10 @@ class Packets:
 if __name__ == "__main__":
     encode1 = Packets(package_type="I", info = "bonjour je suis fou")
     encode2 = Packets(package_type="D", info = "N")
-    encode3 = Packets(package_type="T", info=1)
+    encode3 = Packets(package_type="T", info = 1)
+    encode4 = Packets(package_type="M", info = [[i+j for i in range(5)] for j in range(5)])
 
     print(Packets.decode(encode1.package[4::]))
     print(Packets.decode(encode2.package[4::]))
     print(Packets.decode(encode3.package[4::]))
+    print(Packets.decode(encode4.package[4::]))
