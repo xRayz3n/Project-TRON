@@ -78,8 +78,11 @@ class Packets:
         match array[0].to_bytes(1,'big').decode("utf-8"):
             case "D":
                 return ("D",array[1].to_bytes(1,'big').decode("utf-8"))
+            
             case "M":
+                output = []
                 return
+            
             case "I":
                 sentence = array[1::]
                 output = ""
