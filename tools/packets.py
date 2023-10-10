@@ -81,7 +81,9 @@ class Packets:
             
             case "M":
                 output = []
-                return
+                nb_cells = int.to_bytes(array[1:5],'big')
+                nb_rows = int.to_bytes(array[6:10],'big')
+
             
             case "I":
                 sentence = array[1::]
