@@ -3,7 +3,7 @@ import threading
 import multiprocessing
 import class_game
 import player
-
+from tools import packets
 playerConnection_queue = multiprocessing.Queue()
 
 playerList = []
@@ -28,6 +28,7 @@ def GetPlayers(client_socket, client_addr): #acquire player info
             print(f"Connection lost from {playerInfo.name}")
             client_socket.close()
             break
+        
         
 
 

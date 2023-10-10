@@ -1,5 +1,6 @@
+import player
 class Game:
-    def __init__(self, nb_players : int = 2, map_size : tuple[int,int] = (100,100), speed : float = 1.0 ) -> None:
+    def __init__(self,playersList : player.Player, map_size : tuple[int,int] = (100,100), speed : float = 1.0 ) -> None:
  
         """
         This class has 5 attributes:
@@ -15,8 +16,8 @@ class Game:
                      -boundaries are represented by 5s
                      -free spaces are represented by 0s
         """
-
-        self.nb_players = nb_players
+        self.playerList = playersList
+        nb_players = len(playersList)
        
         pos_players = [[1,1],[map_size,map_size]]
         state_players = ["alive","alive"]
