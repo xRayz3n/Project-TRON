@@ -17,7 +17,8 @@ def OpenConnections(): #keeps the connection open
 
 def GetPlayers(client_socket, client_addr): #acquire player info
 
-    nickname = client_socket.recv(16).decode("utf-8") #receive player nickname, 16 char max
+    #nickname = client_socket.recv(16).decode("utf-8") #receive player nickname, 16 char max
+    nickname = packets.Packets.receive(client_socket)[1]
     print(f"Ip {client_addr} named to {nickname}")
     playerInfo = player.Player(client_socket, client_addr,nickname)
     playerList.append(player)
@@ -38,6 +39,6 @@ def GetPlayers(client_socket, client_addr): #acquire player info
 if __name__ == '__main__':
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('0.0.0.0', 8886))
+    server_socket.bind(('0.0.0.0', 8888))
     connection_thread = threading.Thread(group=None, target=OpenConnections)
     connection_thread.start()
