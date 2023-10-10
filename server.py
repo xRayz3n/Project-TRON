@@ -3,11 +3,7 @@ import threading
 import multiprocessing
 import class_game
 import player
-import os
-try:
-    os.symlink('server', '../tools')
-except: Exception
-from tools import packets
+import packets
 playerConnection_queue = multiprocessing.Queue()
 playerList = []
 
