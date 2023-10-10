@@ -7,11 +7,6 @@ print("Connected")
 
 while True : 
     to_send = input("What do you want to send : ?")
-
-    if(to_send == ""):
-        break
-    to_send += "\0"
+    to_send.rjust(16," ")
     sck.send(to_send.encode())
     print("ok sended well !")
-
-print("Done")

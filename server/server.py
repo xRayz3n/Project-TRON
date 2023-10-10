@@ -1,6 +1,7 @@
 import socket
 import threading
 import multiprocessing
+import class_game
 
 playerConnection_queue = multiprocessing.Queue()
 
