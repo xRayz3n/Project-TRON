@@ -1,3 +1,5 @@
+import socket
+
 class Packets:
 
     """
@@ -63,6 +65,9 @@ class Packets:
                 pack += int.to_bytes(info,1,"big")
 
         self.package = pack
+
+    def send(self, target : socket):
+        socket.send(self.package)
 
     def decode(array : bytearray):
         print(array)
