@@ -6,7 +6,7 @@ sck.connect(('172.21.72.112', 8887))
 print("Connected")
 
 while True : 
-    to_send = input("What do you want to send : ?")
+    to_send = input("Set your nickname: ")
     to_send.rjust(16," ")
     sck.send(to_send.encode())
-    print("ok sended well !")
+    print("ok sent well !")

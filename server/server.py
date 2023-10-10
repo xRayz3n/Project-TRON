@@ -24,7 +24,7 @@ def GetPlayers(client_socket, client_addr): #acquire player info
     playerList.append(player)
     while True:
         status = client_socket.recv(8).decode("utf-8") #receive player status, wait for him to get ready
-        if len(client_socket.recv(1024)) == 0:
+        if len(status) == 0:
             print(f"Connection lost from {playerInfo.name}")
             client_socket.close()
             break
@@ -32,8 +32,6 @@ def GetPlayers(client_socket, client_addr): #acquire player info
 
 
 
-
-#server_socket.close()
 
 
 if __name__ == '__main__':
