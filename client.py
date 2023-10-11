@@ -4,7 +4,7 @@ import threading
 import multiprocessing
 import os
 import pygame as pg
-
+os.system('clear')
 
 def Connect(ip_addr : str, port : int) -> socket.socket:
     sck = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -30,18 +30,18 @@ def Lobby(sck):
         ready_packet = packets.Packets(status, package_type="I")
         ready_packet.send(sck)
         
-        if status == "ready":
-            print("You are now ready")
-        if status == "unready":
-            print("You are now unready")
-
+        match status:
+            case "ready":
+                print("You are now ready")
+            case "unready":
+                print("You are now unready")
 def ReceiveMsg(sck):
      while True:
         message = packets.Packets.receive(sck)[1]
         #os.system('clear')
         if IsDisconnected(sck, message):
             break
-
+        
         print(message)
 
 def render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):
@@ -70,50 +70,6 @@ def render_game(screen : pg.display , matrix : list[list]) -> None :
     pg.display.flip()
 
 if __name__ == '__main__':
-    sck = Connect('172.21.72.112', 8888)
+    sck = Connect('172.21.72.112', 8889)
     Lobby(sck)
 
-
-"""
-if __name__ == "__main__":
-    import time
-    pg.init()
-    screen = pg.display.set_mode([1000, 1000])
-    matrix = [[5 if i == 0 or i == 99 or j == 0 or j == 99 else 0 for i in range(100)] for j in range(100)]
-    x,y = int(len(matrix)/2), int(len(matrix)-2)
-    matrix[x][y] = -3
-    render_game(screen,matrix)
-    direction = "N"
-    past = time.time()
-    running = True  
-    while running:
-        print(past)
-        if  time.time() - past > 0.01:
-            past = time.time()
-            player = matrix[x][y]
-            matrix[x][y] = -player
-            match direction :
-                case "N":
-                    y = y-1
-                case "S":
-                    y = y+1
-                case "E":
-                    x = x+1
-                case "W":
-                    x = x-1
-            matrix[x][y] = player
-            render_game(screen,matrix)
-        
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                running = False
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_LEFT:
-                    direction = "W"
-                if event.key == pg.K_RIGHT:
-                    direction = "E"
-                if event.key == pg.K_UP:
-                    direction = "N"
-                if event.key == pg.K_DOWN:
-                    direction = "S"
-"""
