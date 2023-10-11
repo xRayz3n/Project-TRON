@@ -18,7 +18,6 @@ def IsDisconnected(sck, status) -> bool:
             sck.close()
             return True
     return False
-
 def Lobby(sck):
     to_send = input("Set your nickname: ")
     nickname_packet = packets.Packets(to_send,package_type='I')
@@ -37,12 +36,28 @@ def Lobby(sck):
                 print("You are now unready")
 def ReceiveMsg(sck):
      while True:
-        message = packets.Packets.receive(sck)[1]
+        status, message = packets.Packets.receive(sck)
         #os.system('clear')
         if IsDisconnected(sck, message):
             break
         
+        
         print(message)
+    
+def take_inputs(sck):
+    while True:
+        for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_LEFT:
+                        direction = "W"
+                    if event.key == pg.K_RIGHT:
+                        direction = "E"
+                    if event.key == pg.K_UP:
+                        direction = "N"
+                    if event.key == pg.K_DOWN:
+                        direction = "S"
+        packets.Packets(direction, "D").send(sck)
+
 
 def render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):
     print(f"type = {type}, x = {x}, y = {y}, size =  {cell_size}")
@@ -69,7 +84,10 @@ def render_game(screen : pg.display , matrix : list[list]) -> None :
             render_cell(matrix[i][j], i*cell_size, j*cell_size, screen, cell_size)
     pg.display.flip()
 
+
 if __name__ == '__main__':
-    sck = Connect('172.21.72.112', 8889)
+    sck = Connect('172.21.72.112', 8888)
     Lobby(sck)
 
+
+        
