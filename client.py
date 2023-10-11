@@ -36,12 +36,12 @@ def ReceiveMsg(sck):
         if IsDisconnected(sck, message):
             break
         if status == "T" and message == 1:
-            GameClient()
+            GameClient(sck)
         
         print(message)
     
-def GameClient():
-    threading.Thread(group=None, target=Take_inputs, args=sck).start()
+def GameClient(sck):
+    threading.Thread(group=None, target=Take_inputs, args=[sck]).start()
     pg.init()
     screen = pg.display.set_mode((1000, 1000))
     while True:
@@ -53,6 +53,7 @@ def GameClient():
 
 def Take_inputs(sck):
     while True:
+        direction = ""
         for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_LEFT:
