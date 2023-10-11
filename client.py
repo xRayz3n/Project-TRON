@@ -18,6 +18,7 @@ def IsDisconnected(sck, status) -> bool:
             sck.close()
             return True
     return False
+
 def Lobby(sck):
     to_send = input("Set your nickname: ")
     nickname_packet = packets.Packets(to_send,package_type='I')
@@ -42,8 +43,6 @@ def ReceiveMsg(sck):
             break
 
         print(message)
-    
-
 
 def render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):
     print(f"type = {type}, x = {x}, y = {y}, size =  {cell_size}")
@@ -69,7 +68,6 @@ def render_game(screen : pg.display , matrix : list[list]) -> None :
         for j in range(len(matrix[i])):
             render_cell(matrix[i][j], i*cell_size, j*cell_size, screen, cell_size)
     pg.display.flip()
-
 
 if __name__ == '__main__':
     sck = Connect('172.21.72.112', 8888)

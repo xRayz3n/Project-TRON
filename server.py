@@ -63,11 +63,6 @@ def Broadcast_ToAllPlayers(message):
         packet = packets.Packets(message, package_type="I")
         packet.send(playerInfo.client_socket)
 
-
-
-
-
-
 if __name__ == '__main__':
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind(('0.0.0.0', 8888))
