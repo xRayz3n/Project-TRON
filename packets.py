@@ -86,8 +86,6 @@ class Packets:
                 nb_cells = int.from_bytes(array[1:5],'big')
                 nb_rows = int.from_bytes(array[5:9],'big')
                 data = array[9:]
-                return ("M",[[int.from_bytes(data[i+j*nb_rows],signed=True) for i in range(nb_rows)] for j in range(int(nb_cells/nb_rows))])
-                print(data)
                 return ("M",[[data[i+j*nb_rows] for i in range(nb_rows)] for j in range(int(nb_cells/nb_rows))])
             
             case "I":
