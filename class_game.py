@@ -99,7 +99,6 @@ class Game:
                     
     def You_are_dead(self, player : player.Player):
         player.state = "dead"
-        print(f'{player.name} is dead!')
         #to do : send a message to the players that he is dead (to play animation + other triggers)
 
     def Start_Updating(self):

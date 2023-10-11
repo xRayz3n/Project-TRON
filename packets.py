@@ -84,12 +84,9 @@ class Packets:
             case "M":
                 output = []
                 nb_cells = int.from_bytes(array[1:5],'big')
-                print(nb_cells)
                 nb_rows = int.from_bytes(array[5:9],'big')
-                print(nb_rows)
                 data = array[9:]
-                print(data)
-                return ("M",[[data[i+j] for i in range(nb_rows)] for j in range(int(nb_cells/nb_rows))])
+                return ("M",[[int.from_bytes(data[i+j*nb_rows],signed=True) for i in range(nb_rows)] for j in range(int(nb_cells/nb_rows))])
             
             case "I":
                 sentence = array[1::]

@@ -81,9 +81,12 @@ def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : 
         case 3|-3 :
             color = (0,255,0)
         case 4|-4 :
+            
             color = (255,255,0)
         case 5 : #Wall
             color = (0,255,255)
+        case _ : 
+            color = (255,255,255)
     pg.draw.rect(screen, color , pg.Rect(x,y,cell_size,cell_size))
                                          
 def Render_game(screen : pg.display , matrix : list[list]) -> None :
