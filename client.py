@@ -41,8 +41,8 @@ def ReceiveMsg(sck):
         print(message)
     
 def GameClient(sck):
-    threading.Thread(group=None, target=Take_inputs, args=[sck]).start()
     pg.init()
+    threading.Thread(group=None, target=Take_inputs, args=[sck]).start()
     screen = pg.display.set_mode((1000, 1000))
     while True:
         status, message = packets.Packets.receive(sck)
@@ -64,7 +64,7 @@ def Take_inputs(sck):
                         direction = "N"
                     if event.key == pg.K_DOWN:
                         direction = "S"
-        packets.Packets(direction, "D").send(sck)
+        packets.Packets(direction, package_type="D").send(sck)
 
 
 def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):

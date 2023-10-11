@@ -64,6 +64,7 @@ def GetPlayers(client_socket, client_addr): #acquire player info
                 time.sleep(1)
             Broadcast_ToAllPlayers("Game started!", "I")
             Broadcast_ToAllPlayers(1, "T")
+            print("Game started")
             for aPlayer in playerList:
                 aPlayer.state = "unready"
                 
