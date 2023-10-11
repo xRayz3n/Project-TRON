@@ -49,7 +49,7 @@ def GetPlayers(client_socket, client_addr): #acquire player info
                 playerInfo.state = "unready"
                 print(f"{playerInfo.name} is now unready")
                 Broadcast_ToAllPlayers(f"{playerInfo.name} is no more ready", "I")
-            case "ls":
+            case "ls": #Send the list of players to the command sender
                 message = "\nPlayer list: "
                 for i in range(0,len(playerList)):
                     aPlayer = playerList[i]
@@ -60,15 +60,15 @@ def GetPlayers(client_socket, client_addr): #acquire player info
             message = ('All players are ready, starting in')
             Broadcast_ToAllPlayers(message, "I")
             for i in range(3,0,-1):
-                Broadcast_ToAllPlayers(f"\n{i}...")
+                Broadcast_ToAllPlayers(f"\n{i}...", 'I')
                 time.sleep(1)
             Broadcast_ToAllPlayers("Game started!", "I")
-
+            Broadcast_ToAllPlayers(1, "T")
             for aPlayer in playerList:
                 aPlayer.state = "unready"
                 
             
-        print(f"{playerInfo.name} wrote {status}")
+        print(f"{playerInfo.name}: {status}")
 
 def Broadcast_ToAllPlayers(message, type):
     for playerInfo in playerList:

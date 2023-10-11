@@ -28,23 +28,30 @@ def Lobby(sck):
         status = input("\nType 'ready' when you are: ")
         ready_packet = packets.Packets(status, package_type="I")
         ready_packet.send(sck)
-        
-        match status:
-            case "ready":
-                print("You are now ready")
-            case "unready":
-                print("You are now unready")
+
 def ReceiveMsg(sck):
      while True:
         status, message = packets.Packets.receive(sck)
         #os.system('clear')
         if IsDisconnected(sck, message):
             break
-        
+        if status == "T" and message == 1:
+            GameClient()
         
         print(message)
     
-def take_inputs(sck):
+def GameClient():
+    threading.Thread(group=None, target=Take_inputs, args=sck).start()
+    pg.init()
+    screen = pg.display.set_mode((1000, 1000))
+    while True:
+        status, message = packets.Packets.receive(sck)
+        if status == "M":
+            Render_game(screen, message)
+
+
+
+def Take_inputs(sck):
     while True:
         for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
@@ -59,7 +66,7 @@ def take_inputs(sck):
         packets.Packets(direction, "D").send(sck)
 
 
-def render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):
+def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):
     print(f"type = {type}, x = {x}, y = {y}, size =  {cell_size}")
     match type :
         case 0 : 
@@ -76,12 +83,12 @@ def render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : 
             color = (0,255,255)
     pg.draw.rect(screen, color , pg.Rect(x,y,cell_size,cell_size))
                                          
-def render_game(screen : pg.display , matrix : list[list]) -> None :
+def Render_game(screen : pg.display , matrix : list[list]) -> None :
     screen.fill((0,0,0))
     cell_size = int(1000/max(len(matrix),len(matrix[0])))
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
-            render_cell(matrix[i][j], i*cell_size, j*cell_size, screen, cell_size)
+            Render_cell(matrix[i][j], i*cell_size, j*cell_size, screen, cell_size)
     pg.display.flip()
 
 
