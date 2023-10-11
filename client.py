@@ -48,7 +48,6 @@ def GameClient(sck):
     while True:
         status, message = packets.Packets.receive(sck)
         if status == "M":
-            print(message)
             Render_game(screen, message)
 
 
@@ -71,7 +70,7 @@ def Take_inputs(sck):
 
 
 def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):
-    print(f"type = {type}, x = {x}, y = {y}, size =  {cell_size}")
+    #print(f"type = {type}, x = {x}, y = {y}, size =  {cell_size}")
     match type :
         case 0 : #Free space
             color = (0,0,0)

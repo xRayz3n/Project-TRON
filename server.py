@@ -65,7 +65,7 @@ def GetPlayers(client_socket, client_addr): #acquire player info
             Broadcast_ToAllPlayers("Game started!", "I")
             Broadcast_ToAllPlayers(1, "T")
             print("Game started")
-            class_game.Game(playerList,(10,10), 0.1).Start_Updating()
+            class_game.Game(playerList,(30,30), 1).Start_Updating()
                 
             
         print(f"{playerInfo.name}: {status}")

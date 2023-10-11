@@ -56,7 +56,6 @@ class Game:
     def Broadcast_map_to_all(self):
         for Aplayer in self.playerList :
             to_send = packets.Packets(self.map, package_type="M")
-            print(to_send)
             to_send.send(Aplayer.client_socket)
 
     def update_positions(self) -> None:
