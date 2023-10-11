@@ -44,8 +44,9 @@ class Packets:
                 pack += str(info).encode("utf-8")
                 
             case "M":  
-                nb_of_cells = sum([len(i) for i in info])
-                pack += int.to_bytes(nb_of_cells+9,4,'big')
+                nb_of_cells = int(sum([len(i) for i in info]))
+                lenght = nb_of_cells+9
+                pack += int.to_bytes(lenght,4,'big')
                 pack += str(package_type).encode("utf-8")
                 pack += int.to_bytes(nb_of_cells,4,'big')
                 pack += int.to_bytes(len(info),4,'big')
@@ -83,8 +84,11 @@ class Packets:
             case "M":
                 output = []
                 nb_cells = int.from_bytes(array[1:5],'big')
+                print(nb_cells)
                 nb_rows = int.from_bytes(array[5:9],'big')
+                print(nb_rows)
                 data = array[9:]
+                print(data)
                 return ("M",[[data[i+j] for i in range(nb_rows)] for j in range(int(nb_cells/nb_rows))])
             
             case "I":
