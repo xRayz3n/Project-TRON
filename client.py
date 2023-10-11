@@ -4,6 +4,7 @@ import threading
 import multiprocessing
 import os
 import pygame as pg
+import time
 os.system('clear')
 
 def Connect(ip_addr : str, port : int) -> socket.socket:
@@ -64,8 +65,9 @@ def Take_inputs(sck):
                         direction = "N"
                     if event.key == pg.K_DOWN:
                         direction = "S"
-        packets.Packets(direction, package_type="D").send(sck)
-
+        if direction != " ":
+            packets.Packets(direction, package_type="D").send(sck)
+            
 
 def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):
     print(f"type = {type}, x = {x}, y = {y}, size =  {cell_size}")
