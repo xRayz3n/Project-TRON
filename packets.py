@@ -89,7 +89,7 @@ class Packets:
                 print(nb_rows)
                 data = array[9:]
                 print(data)
-                return ("M",[[data[i+j] for i in range(nb_rows)] for j in range(int(nb_cells/nb_rows))])
+                return ("M",[[data[i+j*nb_rows] for i in range(nb_rows)] for j in range(int(nb_cells/nb_rows))])
             
             case "I":
                 sentence = array[1::]
