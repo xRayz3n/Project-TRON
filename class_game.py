@@ -85,7 +85,7 @@ class Game:
                     case 'W' :
                         if(self.map[x-1][y] == 0):
                             self.map[x][y] = i+1
-                            self.map[x-x][y] = -i-1
+                            self.map[x-1][y] = -i-1
                             self.pos_players[i][1] = x-1
                         else : 
                             self.You_are_dead(self.playerList[i])

@@ -67,12 +67,12 @@ def Take_inputs(sck):
                         direction = "S"
         if direction != " ":
             packets.Packets(direction, package_type="D").send(sck)
-            
+
 
 def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):
     print(f"type = {type}, x = {x}, y = {y}, size =  {cell_size}")
     match type :
-        case 0 : 
+        case 0 : #Free space
             color = (0,0,0)
         case 1|-1 :
             color = (0,0,255)
@@ -82,7 +82,7 @@ def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : 
             color = (0,255,0)
         case 4|-4 :
             color = (255,255,0)
-        case 5 : 
+        case 5 : #Wall
             color = (0,255,255)
     pg.draw.rect(screen, color , pg.Rect(x,y,cell_size,cell_size))
                                          
