@@ -70,9 +70,10 @@ class Packets:
         target.send(self.package)
 
     def receive(target : socket.socket):
-        length = int.from_bytes(target.recv(4),'big')
-
-        return Packets.decode(target.recv(length))
+        try:
+            length = int.from_bytes(target.recv(4),'big')
+            return Packets.decode(target.recv(length))
+        except: return ("I", "disconnect")
 
     def decode(array : bytearray):
         match array[0].to_bytes(1,'big').decode("utf-8"):
