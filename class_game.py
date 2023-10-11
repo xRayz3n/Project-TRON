@@ -2,7 +2,7 @@ import player
 import packets
 import multiprocessing
 import threading
-
+import time
 class Game:
     def __init__(self,playersList : list[player.Player], map_size : tuple[int,int] = (100,100), speed : float = 1.0 ) -> None:
  
@@ -96,3 +96,7 @@ class Game:
         player.state = "dead"
         #to do : send a message to the players that he is dead (to play animation + other triggers)
 
+    def Start_Updating(self):
+        while True:
+            self.update_positions()
+            time.sleep(1/self.speed)
