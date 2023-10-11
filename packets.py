@@ -96,7 +96,10 @@ class Packets:
             
             case "T":
                 return ("T",array[1])
-            
+    
+    def __repr__(self) -> str:
+        return f"info = {self.info} and type = {self.package_type}"    
+
 if __name__ == "__main__":
     encode1 = Packets(package_type="I", info = "bonjour je suis fou")
     encode2 = Packets(package_type="D", info = "N")
