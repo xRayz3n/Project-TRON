@@ -4,15 +4,13 @@ import threading
 import multiprocessing
 import os
 import pygame as pg
-
+os.system('clear')
 
 def Connect(ip_addr : str, port : int) -> socket.socket:
     sck = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sck.connect((ip_addr, port))
     print("Connected")
     return sck
-sck = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sck.connect(('172.21.72.112', 8889))
 
 def IsDisconnected(sck, status) -> bool:
     if status == "disconnect":
@@ -31,18 +29,18 @@ def Lobby(sck):
         ready_packet = packets.Packets(status, package_type="I")
         ready_packet.send(sck)
         
-        if status == "ready":
-            print("You are now ready")
-        if status == "unready":
-            print("You are now unready")
-
+        match status:
+            case "ready":
+                print("You are now ready")
+            case "unready":
+                print("You are now unready")
 def ReceiveMsg(sck):
      while True:
         message = packets.Packets.receive(sck)[1]
         #os.system('clear')
         if IsDisconnected(sck, message):
             break
-
+        
         print(message)
     
 
@@ -92,11 +90,12 @@ def render_game(screen : pg.display , matrix : list[list]) -> None :
     pg.display.flip()
 
 if __name__ == '__main__':
-    sck = Connect('172.21.72.112', 8888)
+    sck = Connect('172.21.72.112', 8889)
     Lobby(sck)
 
 
 """if __name__ == "__main__":
+
     import time
     pg.init()
     screen = pg.display.set_mode([1000, 1000])

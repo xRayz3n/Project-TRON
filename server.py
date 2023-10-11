@@ -44,11 +44,19 @@ def GetPlayers(client_socket, client_addr): #acquire player info
             case "ready":
                 playerInfo.state = "ready"
                 print(f"{playerInfo.name} is now ready")
+                Broadcast_ToAllPlayers(f"{playerInfo.name} is now ready")
             case "unready":
                 playerInfo.state = "unready"
                 print(f"{playerInfo.name} is now unready")
+                Broadcast_ToAllPlayers(f"{playerInfo.name} is no more ready")
+            case "ls":
+                message = "\nPlayer list: "
+                for i in range(0,len(playerList)):
+                    aPlayer = playerList[i]
+                    message += f"\nPlayer {i + 1}: {aPlayer.name} "
+                packets.Packets(message, package_type="I").send(client_socket)
 
-        if all(x.state=="ready" for x in playerList) and len(playerList)>1:
+        if all(aPlayer.state == "ready" for aPlayer in playerList) and len(playerList)>1:
             message = ('All players are ready, starting in')
             Broadcast_ToAllPlayers(message)
             for i in range(3,0,-1):
@@ -56,6 +64,10 @@ def GetPlayers(client_socket, client_addr): #acquire player info
                 time.sleep(1)
             Broadcast_ToAllPlayers("Game started!")
 
+            for aPlayer in playerList:
+                aPlayer.state = "unready"
+                
+            
         print(f"{playerInfo.name} wrote {status}")
 
 def Broadcast_ToAllPlayers(message):
@@ -70,5 +82,5 @@ def Broadcast_ToAllPlayers(message):
 
 if __name__ == '__main__':
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('0.0.0.0', 8888))
+    server_socket.bind(('0.0.0.0', 8889))
     threading.Thread(group=None, target=OpenConnections).start()
