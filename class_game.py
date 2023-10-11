@@ -41,8 +41,11 @@ class Game:
         self.pos_players = pos_players
         self.direction_players = direction_players
         
-        self.map = [[0 if (i != 0 and i != map_size[0]+1) and (j != 0 and j!= map_size[1]+1) else 5 for i in range(map_size[0]+2)] for j in range(map_size[1]+2)] 
-        
+        map = [[0 if (i != 0 and i != map_size[0]+1) and (j != 0 and j!= map_size[1]+1) else 5 for i in range(map_size[0]+2)] for j in range(map_size[1]+2)] 
+        for i in range(len(pos_players)) :
+            map[pos_players[i][0]][pos_players[i][1]] = -i-1
+
+        self.map = map
         self.speed = speed
 
     def change_direction_player(self, player : player.Player):
