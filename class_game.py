@@ -23,16 +23,16 @@ class Game:
 
         nb_players = len(playersList)
 
-        pos_players = [[int(map_size/2),1],[int(map_size/2),map_size]]
+        pos_players = [[int(map_size[0]/2),1],[int(map_size[0]/2),map_size[1]]]
         direction_players = {}
         direction_players += {self.playerList[0].client_addr : "S"}
         direction_players += {self.playerList[1].client_addr : "N"}
 
         if (nb_players >= 3):
-            pos_players.append([1,int(map_size/2)])
+            pos_players.append([1,int(map_size[1]/2)])
             direction_players += {self.playerList[2].client_addr : "E"}
         if (nb_players >= 4):
-            pos_players.append([map_size,int(map_size/2)])
+            pos_players.append([map_size[0],int(map_size[1]/2)])
             direction_players += {self.playerList[2].client_addr : "W"}
 
         for Aplayer in playersList :
