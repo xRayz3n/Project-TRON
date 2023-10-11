@@ -5,4 +5,3 @@ class Player:
         self.client_socket = client_socket
         self.name = name
         self.state = state
-        
