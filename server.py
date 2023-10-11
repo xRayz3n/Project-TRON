@@ -29,7 +29,7 @@ def GetPlayers(client_socket, client_addr): #acquire player info
     playerList.append(playerInfo)
 
     message = f"{playerInfo.name} is the player {playerList.index(playerInfo) + 1}, "
-    Broadcast_ToAllPlayers(message)
+    Broadcast_ToAllPlayers(message, "I")
 
     while True:
         type, status = packets.Packets.receive(client_socket)
@@ -44,12 +44,12 @@ def GetPlayers(client_socket, client_addr): #acquire player info
             case "ready":
                 playerInfo.state = "ready"
                 print(f"{playerInfo.name} is now ready")
-                Broadcast_ToAllPlayers(f"{playerInfo.name} is now ready")
+                Broadcast_ToAllPlayers(f"{playerInfo.name} is now ready", "I")
             case "unready":
                 playerInfo.state = "unready"
                 print(f"{playerInfo.name} is now unready")
-                Broadcast_ToAllPlayers(f"{playerInfo.name} is no more ready")
-            case "ls":
+                Broadcast_ToAllPlayers(f"{playerInfo.name} is no more ready", "I")
+            case "ls": #Send the list of players to the command sender
                 message = "\nPlayer list: "
                 for i in range(0,len(playerList)):
                     aPlayer = playerList[i]
@@ -58,24 +58,24 @@ def GetPlayers(client_socket, client_addr): #acquire player info
 
         if all(aPlayer.state == "ready" for aPlayer in playerList) and len(playerList)>1:
             message = ('All players are ready, starting in')
-            Broadcast_ToAllPlayers(message)
+            Broadcast_ToAllPlayers(message, "I")
             for i in range(3,0,-1):
-                Broadcast_ToAllPlayers(f"\n{i}...")
+                Broadcast_ToAllPlayers(f"\n{i}...", 'I')
                 time.sleep(1)
-            Broadcast_ToAllPlayers("Game started!")
-
+            Broadcast_ToAllPlayers("Game started!", "I")
+            Broadcast_ToAllPlayers(1, "T")
             for aPlayer in playerList:
                 aPlayer.state = "unready"
                 
             
-        print(f"{playerInfo.name} wrote {status}")
+        print(f"{playerInfo.name}: {status}")
 
-def Broadcast_ToAllPlayers(message):
+def Broadcast_ToAllPlayers(message, type):
     for playerInfo in playerList:
-        packet = packets.Packets(message, package_type="I")
+        packet = packets.Packets(message, package_type=type)
         packet.send(playerInfo.client_socket)
 
 if __name__ == '__main__':
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('0.0.0.0', 8889))
+    server_socket.bind(('0.0.0.0', 8888))
     threading.Thread(group=None, target=OpenConnections).start()
