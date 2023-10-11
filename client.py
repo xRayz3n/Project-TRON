@@ -53,7 +53,7 @@ def GameClient(sck):
 
 def Take_inputs(sck):
     while True:
-        direction = ""
+        direction = " "
         for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_LEFT:
