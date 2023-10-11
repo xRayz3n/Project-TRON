@@ -104,8 +104,7 @@ if __name__ == "__main__":
     encode1 = Packets(package_type="I", info = "bonjour je suis fou")
     encode2 = Packets(package_type="D", info = "N")
     encode3 = Packets(package_type="T", info = 1)
-    encode4 = Packets(package_type="M", info = [[i+j for i in range(5)] for j in range(5)])
-
+    encode4 = Packets(package_type="M", info = [[0,0,0,0],[1,1,1,1],[2,2,2,2],[3,3,3,3]])
     print(Packets.decode(encode1.package[4::]))
     print(Packets.decode(encode2.package[4::]))
     print(Packets.decode(encode3.package[4::]))

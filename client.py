@@ -48,6 +48,7 @@ def GameClient(sck):
     while True:
         status, message = packets.Packets.receive(sck)
         if status == "M":
+            print(message)
             Render_game(screen, message)
 
 
