@@ -50,13 +50,13 @@ class Game:
             threading.Thread(group=None, target=self.change_direction_player, args=[Aplayer]).start()
 
 
-    def change_direction_player(self, player : player.Player):
+    def change_direction_player(self, player : player.Player): #MULTITHREAD
         while True :
             type, new_dir = packets.Packets.receive(player.client_socket)
             self.direction_players[player.client_addr] = new_dir
             time.sleep(1/30)
 
-    def Broadcast_map_to_all(self):
+    def Broadcast_map_to_all(self): #NEED MULTITHREAD
         for Aplayer in self.playerList :
             to_send = packets.Packets(self.map, package_type="M")
             to_send.send(Aplayer.client_socket)
