@@ -104,4 +104,5 @@ def Render_game(screen : pg.display , matrix : list[list]) -> None :
 
 
 if __name__ == '__main__':
+    sck = Connect('192.168.43.210', 8888)
     Lobby(sck)
