@@ -50,7 +50,7 @@ def GameClient(sck):
         status, packet = packets.Packets.receive(sck)
         if status == 'M':
             game = gameclient.GameClient(packet)
-        if status == 'I':
+        if status == 'U':
             game.Update_Positions(packet)
             Render_game(screen, game.map)
 
