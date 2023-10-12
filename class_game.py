@@ -25,20 +25,25 @@ class Game:
 
         pos_players = [[int(map_size[0]/2),1],[int(map_size[0]/2),map_size[1]]]
         direction_players = {}
+        sended = {}
         direction_players.update({self.playerList[0].client_addr : "S"})
+        sended.update({self.playerList[0].client_addr : False})
         direction_players.update({self.playerList[1].client_addr : "N"})
+        sended.update({self.playerList[1].client_addr : False})
 
         if (nb_players >= 3):
             pos_players.append([1,int(map_size[1]/2)])
             direction_players.update({self.playerList[2].client_addr : "E"})
+            sended.update({self.playerList[2].client_addr : False})
         if (nb_players >= 4):
             pos_players.append([map_size[0],int(map_size[1]/2)])
-            direction_players.update({self.playerList[2].client_addr : "W"})
-
+            direction_players.update({self.playerList[3].client_addr : "W"})
+            sended.update({self.playerList[3].client_addr : False})
         
         self.pos_players = pos_players
         self.direction_players = direction_players
-        
+        self.sended = sended        
+
         map = [[0 if (i != 0 and i != map_size[0]+1) and (j != 0 and j!= map_size[1]+1) else 5 for i in range(map_size[0]+2)] for j in range(map_size[1]+2)] 
         for i in range(len(pos_players)) :
             map[pos_players[i][0]][pos_players[i][1]] = -i-1
@@ -48,6 +53,7 @@ class Game:
 
         for Aplayer in playersList :
             threading.Thread(group=None, target=self.change_direction_player, args=[Aplayer]).start()
+            threading.Thread(group=None, target=self.Broadcast_map_to_player, args=[Aplayer]).start()
 
 
     def change_direction_player(self, player : player.Player): #MULTITHREAD
@@ -56,10 +62,12 @@ class Game:
             self.direction_players[player.client_addr] = new_dir
             time.sleep(1/30)
 
-    def Broadcast_map_to_all(self): #NEED MULTITHREAD
-        for Aplayer in self.playerList :
-            to_send = packets.Packets(self.map, package_type="M")
-            to_send.send(Aplayer.client_socket)
+    def Broadcast_map_to_player(self, player : player.Player): #NEED MULTITHREAD
+        while True :
+            if not(self.sended[player.client_addr]):
+                to_send = packets.Packets(self.map, package_type="M")
+                to_send.send(player.client_socket)
+                self.sended[player.client_addr] = True
 
     def update_positions(self) -> None:
 
@@ -96,7 +104,8 @@ class Game:
                             self.pos_players[i][0] = x-1
                         else : 
                             self.You_are_dead(self.playerList[i])
-        self.Broadcast_map_to_all()
+        for i in self.sended.keys():
+            self.sended[i] = False
 
                     
     def You_are_dead(self, player : player.Player):
