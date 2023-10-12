@@ -121,7 +121,7 @@ class Packets:
                     letter = i.to_bytes(1,'big').decode("utf-8")
                     if letter != "_":
                         output += letter
-                return output
+                return ("U", output)
     
     def __repr__(self) -> str:
         return f"info = {self.info} and type = {self.package_type}"    
