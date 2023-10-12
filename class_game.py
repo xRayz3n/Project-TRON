@@ -23,7 +23,7 @@ class Game:
 
         nb_players = len(playersList)
 
-        pos_players = [[int(map_size[0]/2),1],[int(map_size[0]/2),map_size[1]]]
+        pos_players = [ [int(map_size[0]/2),1], [int(map_size[0]/2),map_size[1]] ]
         direction_players = {}
         sended = {}
         direction_players.update({self.playerList[0].client_addr : "S"})
@@ -53,7 +53,7 @@ class Game:
 
         for Aplayer in playersList :
             threading.Thread(group=None, target=self.change_direction_player, args=[Aplayer]).start()
-            threading.Thread(group=None, target=self.Broadcast_map_to_player, args=[Aplayer]).start()
+            threading.Thread(group=None, target=self.Broadcast_packages_to_player, args=[Aplayer]).start()
 
 
     def change_direction_player(self, player : player.Player): #MULTITHREAD
@@ -62,12 +62,31 @@ class Game:
             self.direction_players[player.client_addr] = new_dir
             time.sleep(1/30)
 
-    def Broadcast_map_to_player(self, player : player.Player): #NEED MULTITHREAD
+    """def Broadcast_map_to_player(self, player : player.Player): #NEED MULTITHREAD
         while True :
             if not(self.sended[player.client_addr]):
                 to_send = packets.Packets(self.map, package_type="M")
                 to_send.send(player.client_socket)
+                self.sended[player.client_addr] = True"""
+
+    def Broadcast_packages_to_player(self, player : player.Player):
+        counter = 101
+        while True :
+            if not(self.sended[player.client_addr]):
+                if counter > 100:
+                    to_send = packets.Packets(self.map, package_type="M")
+                    to_send.send(player.client_socket)
+                    counter = 0
+                    print("map sent!")
+
+                to_send = packets.Packets("EW", package_type="I")
+                to_send.send(player.client_socket)
                 self.sended[player.client_addr] = True
+                counter += 1
+                print("direction sent!")
+
+                
+
 
     def update_positions(self) -> None:
 

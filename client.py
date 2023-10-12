@@ -5,6 +5,7 @@ import multiprocessing
 import os
 import pygame as pg
 import time
+import gameclient
 os.system('clear')
 
 def Connect(ip_addr : str, port : int) -> socket.socket:
@@ -46,9 +47,12 @@ def GameClient(sck):
     threading.Thread(group=None, target=Take_inputs, args=[sck]).start()
     screen = pg.display.set_mode((1000, 1000))
     while True:
-        status, message = packets.Packets.receive(sck)
-        if status == "M":
-            Render_game(screen, message)
+        status, packet = packets.Packets.receive(sck)
+        if status == 'M':
+            game = gameclient.GameClient(packet)
+        if status == 'I':
+            game.Update_Positions(packet)
+            Render_game(screen, game.map)
 
 
 
@@ -101,7 +105,7 @@ def Render_game(screen : pg.display , matrix : list[list]) -> None :
 
 
 if __name__ == '__main__':
-    sck = Connect('172.21.72.251', 8888)
+    sck = Connect('172.21.72.112', 8888)
     Lobby(sck)
 
 
