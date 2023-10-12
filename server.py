@@ -83,4 +83,4 @@ if __name__ == '__main__':
             Broadcast_ToAllPlayers("Game started!", "I")
             Broadcast_ToAllPlayers(1, "T")
             print("Game started")
-            class_game.Game(playerList,(50,50), 5).Start_Updating()
+            class_game.Game(playerList,(100,100), 10).Start_Updating()

@@ -72,7 +72,6 @@ def Take_inputs(sck):
         if direction != " ":
             keypress_packet = packets.Packets(direction, package_type="D")
             keypress_packet.send(sck)
-            print(keypress_packet)
         time.sleep(1/10)
 
 
@@ -105,7 +104,7 @@ def Render_game(screen : pg.display , matrix : list[list]) -> None :
 
 
 if __name__ == '__main__':
-    sck = Connect('172.21.72.112', 8888)
+    sck = Connect('10.1.170.91', 8888)
     Lobby(sck)
 
 

@@ -89,7 +89,7 @@ class Game:
         while True :
             if not(self.sended[player.client_addr]):
                 outputDirection = ""
-                if counter.custom > 100:
+                if counter.custom > 20:
                     to_send = packets.Packets(self.map, package_type="M")
                     to_send.send(player.client_socket)
                     counter.custom = 0
