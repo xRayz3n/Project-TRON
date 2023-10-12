@@ -35,9 +35,7 @@ class Game:
             pos_players.append([map_size[0],int(map_size[1]/2)])
             direction_players.update({self.playerList[2].client_addr : "W"})
 
-        for Aplayer in playersList :
-            threading.Thread(group = None, target = self.change_direction_player, args= [Aplayer]).start()
-
+        
         self.pos_players = pos_players
         self.direction_players = direction_players
         
@@ -48,10 +46,15 @@ class Game:
         self.map = map
         self.speed = speed
 
+        for Aplayer in playersList :
+            threading.Thread(group=None, target=self.change_direction_player, args=[Aplayer]).start()
+
+
     def change_direction_player(self, player : player.Player):
         while True :
-            new_dir = packets.Packets.receive(player.client_socket)
-            self.direction_players[player.client_addr] = new_dir[1]
+            type, new_dir = packets.Packets.receive(player.client_socket)
+            self.direction_players[player.client_addr] = new_dir
+            time.sleep(1/30)
 
     def Broadcast_map_to_all(self):
         for Aplayer in self.playerList :

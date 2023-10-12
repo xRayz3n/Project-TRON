@@ -66,7 +66,10 @@ def Take_inputs(sck):
                     if event.key == pg.K_DOWN:
                         direction = "S"
         if direction != " ":
-            packets.Packets(direction, package_type="D").send(sck)
+            keypress_packet = packets.Packets(direction, package_type="D")
+            keypress_packet.send(sck)
+            print(keypress_packet)
+        time.sleep(1/10)
 
 
 def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):

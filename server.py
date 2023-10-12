@@ -32,8 +32,9 @@ def GetPlayers(client_socket, client_addr): #acquire player info
     Broadcast_ToAllPlayers(message, "I")
 
     while True:
-        type, status = packets.Packets.receive(client_socket)
-        
+        try:
+            type, status = packets.Packets.receive(client_socket)
+        except: print("weird thing")
 
         match status:
             case "disconnect":
@@ -45,6 +46,7 @@ def GetPlayers(client_socket, client_addr): #acquire player info
                 playerInfo.state = "ready"
                 print(f"{playerInfo.name} is now ready")
                 Broadcast_ToAllPlayers(f"{playerInfo.name} is now ready", "I")
+                break
             case "unready":
                 playerInfo.state = "unready"
                 print(f"{playerInfo.name} is now unready")
@@ -55,18 +57,10 @@ def GetPlayers(client_socket, client_addr): #acquire player info
                     aPlayer = playerList[i]
                     message += f"\nPlayer {i + 1}: {aPlayer.name} "
                 packets.Packets(message, package_type="I").send(client_socket)
-
-        if all(aPlayer.state == "ready" for aPlayer in playerList) and len(playerList)>1:
-            message = ('All players are ready, starting in')
-            Broadcast_ToAllPlayers(message, "I")
-            for i in range(3,0,-1):
-                Broadcast_ToAllPlayers(f"\n{i}...", 'I')
-                time.sleep(1)
-            Broadcast_ToAllPlayers("Game started!", "I")
-            Broadcast_ToAllPlayers(1, "T")
-            print("Game started")
-            class_game.Game(playerList,(30,30), 1).Start_Updating()
-                
+            case _:
+                print("something went wrong in server.py/getplayers")
+        
+        
             
         print(f"{playerInfo.name}: {status}")
 
@@ -79,3 +73,14 @@ if __name__ == '__main__':
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind(('0.0.0.0', 8888))
     threading.Thread(group=None, target=OpenConnections).start()
+    while True:
+        if all(aPlayer.state == "ready" for aPlayer in playerList) and len(playerList)>1:
+            message = ('All players are ready, starting in')
+            Broadcast_ToAllPlayers(message, "I")
+            for i in range(3,0,-1):
+                Broadcast_ToAllPlayers(f"\n{i}...", 'I')
+                time.sleep(1)
+            Broadcast_ToAllPlayers("Game started!", "I")
+            Broadcast_ToAllPlayers(1, "T")
+            print("Game started")
+            class_game.Game(playerList,(100,100), 10).Start_Updating()
