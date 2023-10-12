@@ -73,17 +73,18 @@ class Game:
         counter = 101
         while True :
             if not(self.sended[player.client_addr]):
+                outputDirection = ""
                 if counter > 100:
                     to_send = packets.Packets(self.map, package_type="M")
                     to_send.send(player.client_socket)
                     counter = 0
-                    print("map sent!")
+                for aPlayer in self.playerList:
+                    outputDirection += self.direction_players[aPlayer.client_addr]
 
-                to_send = packets.Packets("EW", package_type="I")
+                to_send = packets.Packets(outputDirection, package_type="U")
                 to_send.send(player.client_socket)
                 self.sended[player.client_addr] = True
                 counter += 1
-                print("direction sent!")
 
                 
 
