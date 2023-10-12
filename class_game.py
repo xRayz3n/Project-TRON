@@ -54,10 +54,9 @@ class Game:
         for Aplayer in playersList :
             Aplayer.state = "alive"
             threading.Thread(group=None, target=self.change_direction_player, args=[Aplayer]).start()
-            threading.Thread(group=None, target=self.Broadcast_packages_to_player, args=[Aplayer]).start()
+            threading.Thread(group=None, target=self.update_positions, args=[Aplayer]).start()
 
-
-    def change_direction_player(self, player : player.Player): #MULTITHREAD
+    def change_direction_player(self, player : player.Player): #MULTITHREAD A
         while player.state == "alive" :
             type, new_dir = packets.Packets.receive(player.client_socket)
 
@@ -74,6 +73,7 @@ class Game:
                 case "E":
                     if self.direction_players[player.client_addr] != "W":
                         self.direction_players[player.client_addr] = new_dir
+            
             time.sleep(1/30)
 
     """def Broadcast_map_to_player(self, player : player.Player): #NEED MULTITHREAD
@@ -83,31 +83,29 @@ class Game:
                 to_send.send(player.client_socket)
                 self.sended[player.client_addr] = True"""
 
-    def Broadcast_packages_to_player(self, player : player.Player):
+    def Broadcast_packages_to_player(self, player : player.Player): #MULTITHREAD B
         counter = threading.local()
         counter.custom = 101
-        while True :
-            if not(self.sended[player.client_addr]):
-                outputDirection = ""
-                if counter.custom > 100:
-                    to_send = packets.Packets(self.map, package_type="M")
-                    to_send.send(player.client_socket)
-                    counter.custom = 0
-                for aPlayer in self.playerList:
-                    outputDirection += self.direction_players[aPlayer.client_addr]
-
-                to_send = packets.Packets(outputDirection, package_type="U")
+        if not(self.sended[player.client_addr]):
+            outputDirection = ""
+            if counter.custom > 20:
+                to_send = packets.Packets(self.map, package_type="M")
                 to_send.send(player.client_socket)
-                self.sended[player.client_addr] = True
-                counter.custom += 1
+                counter.custom = 0
+            for aPlayer in self.playerList:
+                outputDirection += self.direction_players[aPlayer.client_addr]
 
+            to_send = packets.Packets(outputDirection, package_type="U")
+            to_send.send(player.client_socket)
+            #self.sended[player.client_addr] = True
+            counter.custom += 1
                 
 
 
-    def update_positions(self) -> None:
-
-        for i in range(len(self.playerList)):
-            if self.playerList[i].state != "dead":
+    def update_positions(self, player : player.Player) -> None: #MULTITHREAD B
+        while True:
+            i = self.playerList.index(player)
+            if player.state != "dead":
                 x = self.pos_players[i][0]
                 y = self.pos_players[i][1]
                 match(self.direction_players[self.playerList[i].client_addr]):
@@ -139,9 +137,9 @@ class Game:
                             self.pos_players[i][0] = x-1
                         else : 
                             self.You_are_dead(self.playerList[i])
-        for i in self.sended.keys():
             self.sended[i] = False
-
+            self.Broadcast_packages_to_player(player)
+            time.sleep(1/self.speed)
                     
     def You_are_dead(self, player : player.Player):
         player.state = "dead"
@@ -150,5 +148,4 @@ class Game:
 
     def Start_Updating(self):
         while True:
-            self.update_positions()
             time.sleep(1/self.speed)
