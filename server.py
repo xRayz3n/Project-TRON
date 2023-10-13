@@ -81,7 +81,7 @@ if __name__ == '__main__':
                 time.sleep(1)
             Broadcast_ToAllPlayers("Game started!", "I")
             for i in range(len(playerList)):
-                playerList[i].number = i
+                playerList[i].number = i+1
                 packet = packets.Packets(i+1, package_type='T')
                 packet.send(playerList[i].client_socket)
             print("Game started")

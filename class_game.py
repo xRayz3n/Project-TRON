@@ -74,7 +74,7 @@ class Game:
                     if self.direction_players[player.client_addr] != "W":
                         self.direction_players[player.client_addr] = new_dir
             
-            time.sleep(1/20)
+            time.sleep(1/self.speed)
 
     def Broadcast_map_to_player(self, player : player.Player): 
             to_send = packets.Packets(self.map, package_type="M")
@@ -88,7 +88,6 @@ class Game:
 
         to_send = packets.Packets(outputDirection, package_type="U")
         to_send.send(player.client_socket)
-        #counter.custom += 1
                 
 
 
@@ -130,7 +129,8 @@ class Game:
                             self.pos_players[i][0] = x-1
                         else : 
                             self.You_are_dead(self.playerList[i])
-            
+            if self.force_refresh_map[player.client_addr] == True:
+                print("force refresh") 
             if counter.custom > 20 or self.force_refresh_map[player.client_addr]:
                 self.force_refresh_map[player.client_addr] = False
                 self.Broadcast_map_to_player(player)
@@ -144,6 +144,7 @@ class Game:
                     
     def You_are_dead(self, player : player.Player):
         player.state = "dead"
+        self.direction_players[player.client_addr] = "X"
         for i in range(len(self.map)):
             for j in range(len(self.map[i])):
                 if self.map[i][j] == player.number or self.map[i][j] == -player.number :
