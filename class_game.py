@@ -76,34 +76,27 @@ class Game:
             
             time.sleep(1/30)
 
-    """def Broadcast_map_to_player(self, player : player.Player): #NEED MULTITHREAD
-        while True :
-            if not(self.sended[player.client_addr]):
-                to_send = packets.Packets(self.map, package_type="M")
-                to_send.send(player.client_socket)
-                self.sended[player.client_addr] = True"""
+    def Broadcast_map_to_player(self, player : player.Player): 
+            to_send = packets.Packets(self.map, package_type="M")
+            to_send.send(player.client_socket)
 
-    def Broadcast_packages_to_player(self, player : player.Player): #MULTITHREAD B
-        counter = threading.local()
-        counter.custom = 101
+    def Broadcast_directions_to_player(self, player : player.Player): #MULTITHREAD B
+        
         if not(self.sended[player.client_addr]):
             outputDirection = ""
-            if counter.custom > 100:
-                to_send = packets.Packets(self.map, package_type="M")
-                to_send.send(player.client_socket)
-                counter.custom = 0
-                print(f"map sent to {player.name}")
             for aPlayer in self.playerList:
                 outputDirection += self.direction_players[aPlayer.client_addr]
 
             to_send = packets.Packets(outputDirection, package_type="U")
             to_send.send(player.client_socket)
-            #self.sended[player.client_addr] = True
-            counter.custom += 1
+            #counter.custom += 1
                 
 
 
     def update_positions(self, player : player.Player) -> None: #MULTITHREAD B
+        counter = threading.local()
+        counter.custom = 0
+        self.Broadcast_map_to_player(player)
         while True:
             i = self.playerList.index(player)
             if player.state != "dead":
@@ -139,7 +132,13 @@ class Game:
                         else : 
                             self.You_are_dead(self.playerList[i])
             self.sended[i] = False
-            self.Broadcast_packages_to_player(player)
+            self.Broadcast_directions_to_player(player)
+            if counter.custom > 100:
+                self.Broadcast_map_to_player(player)
+                counter.custom = 0
+                print(f"map sent to {player.name}")
+            counter.custom += 1
+
             time.sleep(1/self.speed)
                     
     def You_are_dead(self, player : player.Player):
