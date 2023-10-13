@@ -70,7 +70,8 @@ def Broadcast_ToAllPlayers(message, type):
 
 if __name__ == '__main__':
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('0.0.0.0', 8888))
+    port = input("Port: ")
+    server_socket.bind(('0.0.0.0', int(port)))
     threading.Thread(group=None, target=OpenConnections).start()
     while True:
         if all(aPlayer.state == "ready" for aPlayer in playerList) and len(playerList)>1:
