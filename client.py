@@ -38,7 +38,7 @@ def ReceiveMsg(sck):
         if IsDisconnected(sck, message):
             break
         if status == "T":
-            GameClient(sck)
+            GameClient(sck, message)
         print(message)
         
     

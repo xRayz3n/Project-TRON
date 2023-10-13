@@ -27,8 +27,7 @@ def GetPlayers(client_socket, client_addr): #acquire player info
     print(f"Ip {client_addr} named to {nickname}")
     playerInfo = player.Player(client_socket, client_addr,nickname)
     playerList.append(playerInfo)
-
-    message = f"{playerInfo.name} is the player {playerList.index(playerInfo) + 1}, "
+    message = f"\n{playerInfo.name} is the player {playerList.index(playerInfo) + 1}, "
     Broadcast_ToAllPlayers(message, "I")
 
     while True:
@@ -83,7 +82,8 @@ if __name__ == '__main__':
             Broadcast_ToAllPlayers("Game started!", "I")
             Broadcast_ToAllPlayers(1, "T")
             for i in range(len(playerList)):
-                packet = packets.Packets(i, package_type='T')
+                playerList[i].number = i
+                packet = packets.Packets(i+1, package_type='T')
                 packet.send(playerList[i].client_socket)
             print("Game started")
             class_game.Game(playerList,(50,50), 5)
