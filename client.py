@@ -39,7 +39,6 @@ def ReceiveMsg(sck):
             break
         if status == "T" and message == 1:
             GameClient(sck)
-            
         print(message)
         
     
