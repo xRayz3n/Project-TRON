@@ -48,7 +48,6 @@ def GameClient(sck):
     screen = pg.display.set_mode((1000, 1000))
     while True:
         status, packet = packets.Packets.receive(sck)
-        print(packet)
         if status == 'M':
             game = gameclient.GameClient(packet)
         if status == 'U':
@@ -105,5 +104,5 @@ def Render_game(screen : pg.display , matrix : list[list]) -> None :
 
 
 if __name__ == '__main__':
-    sck = Connect('172.21.72.112', 8888)
+    sck = Connect('172.21.72.251', 8888)
     Lobby(sck)
