@@ -55,6 +55,8 @@ def GameClient(sck):
         if status == 'U' and game.map != []:
             game.Update_Positions(packet)
             Render_game(screen, game.map)
+        if status == 'I':
+            print(packet)
 
 
 
@@ -74,7 +76,7 @@ def Take_inputs(sck):
         if direction != " ":
             keypress_packet = packets.Packets(direction, package_type="D")
             keypress_packet.send(sck)
-        time.sleep(1/10)
+        time.sleep(1/20)
 
 
 def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):

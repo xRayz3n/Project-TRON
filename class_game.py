@@ -74,7 +74,7 @@ class Game:
                     if self.direction_players[player.client_addr] != "W":
                         self.direction_players[player.client_addr] = new_dir
             
-            time.sleep(1/30)
+            time.sleep(1/20)
 
     def Broadcast_map_to_player(self, player : player.Player): 
             to_send = packets.Packets(self.map, package_type="M")
@@ -136,7 +136,6 @@ class Game:
             if counter.custom > 20:
                 self.Broadcast_map_to_player(player)
                 counter.custom = 0
-                print(f"map sent to {player.name}")
             else:
                 self.Broadcast_directions_to_player(player)
                 
@@ -146,9 +145,8 @@ class Game:
                     
     def You_are_dead(self, player : player.Player):
         player.state = "dead"
-        print(f"{player.name} is dead!")
+        for playerInfo in self.playerList:
+            message = (f"{player.name} is dead!")
+            packet = packets.Packets(message, package_type='I')
+            packet.send(playerInfo.client_socket)
         #to do : send a message to the players that he is dead (to play animation + other triggers)
-
-    def Start_Updating(self):
-        while True:
-            time.sleep(1/self.speed)
