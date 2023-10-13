@@ -114,5 +114,8 @@ def Render_game(screen : pg.display , matrix : list[list], playerNumber : int) -
 
 
 if __name__ == '__main__':
-    sck = Connect('172.21.72.112', 8888)
+    ip = input("IP address: ")
+    port = input("Port: ")
+    sck = Connect(ip, int(port))
+    #sck = Connect('172.21.72.112', 8888)
     Lobby(sck)
