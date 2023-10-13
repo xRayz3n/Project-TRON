@@ -38,7 +38,7 @@ def ReceiveMsg(sck):
         if IsDisconnected(sck, message):
             break
         if status == "T":
-            GameClient(sck)
+            GameClient(sck, message)
         print(message)
         
     
@@ -54,7 +54,7 @@ def GameClient(sck, playerNumber):
             game.GetPlayers_Positions()
         if status == 'U' and game.map != []:
             game.Update_Positions(packet)
-            Render_game(screen, game.map)
+            Render_game(screen, game.map, playerNumber)
         if status == 'I':
             print(packet)
 
@@ -79,8 +79,10 @@ def Take_inputs(sck):
         time.sleep(1/20)
 
 
-def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):
+def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int, playerNumber : int):
     #print(f"type = {type}, x = {x}, y = {y}, size =  {cell_size}")
+    if type == -playerNumber :
+        pg.draw.rect(screen, (255,255,255) , pg.Rect(x,y,cell_size,cell_size))
     if type >= 0 :
         width = 0
     else :
@@ -102,12 +104,12 @@ def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : 
             color = (255,255,255)
     pg.draw.rect(screen, color , pg.Rect(x,y,cell_size,cell_size), width)
                                          
-def Render_game(screen : pg.display , matrix : list[list]) -> None :
+def Render_game(screen : pg.display , matrix : list[list], playerNumber : int) -> None :
     screen.fill((0,0,0))
     cell_size = int(1000/max(len(matrix),len(matrix[0])))
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
-            Render_cell(matrix[i][j], i*cell_size, j*cell_size, screen, cell_size)
+            Render_cell(matrix[i][j], i*cell_size, j*cell_size, screen, cell_size, playerNumber)
     pg.display.flip()
 
 

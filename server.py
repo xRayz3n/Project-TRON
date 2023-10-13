@@ -83,7 +83,7 @@ if __name__ == '__main__':
             Broadcast_ToAllPlayers("Game started!", "I")
             Broadcast_ToAllPlayers(1, "T")
             for i in range(len(playerList)):
-                packet = packets.Packets(i, package_type='T')
+                packet = packets.Packets(i+1, package_type='T')
                 packet.send(playerList[i].client_socket)
             print("Game started")
             class_game.Game(playerList,(50,50), 5)
