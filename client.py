@@ -37,12 +37,12 @@ def ReceiveMsg(sck):
         #os.system('clear')
         if IsDisconnected(sck, message):
             break
-        if status == "T" and message == 1:
+        if status == "T":
             GameClient(sck)
         print(message)
         
     
-def GameClient(sck):
+def GameClient(sck, playerNumber):
     pg.init()
     threading.Thread(group=None, target=Take_inputs, args=[sck]).start()
     screen = pg.display.set_mode((1000, 1000))
