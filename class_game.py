@@ -150,7 +150,7 @@ class Game:
                 if self.map[i][j] == player.number or self.map[i][j] == -player.number :
                     self.map[i][j] = 0
 
-        remaning_players = list(filter(lambda x : x.status == "alive", self.playerList))
+        remaning_players = list(filter(lambda x : x.state == "alive", self.playerList))
 
         for playerInfo in self.playerList:
             self.force_refresh_map[playerInfo.client_addr] = True
@@ -162,5 +162,7 @@ class Game:
                 message = (f"{remaning_players[0].name} has won !!!")
                 packet = packets.Packets(message, package_type='I')
                 packet.send(playerInfo.client_socket)
+                close_packet = packets.Packets(100, package_type='T')
+                close_packet.send(playerInfo.client_socket)
 
         #to do : send a message to the players that he is dead (to play animation + other triggers)
