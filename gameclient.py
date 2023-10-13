@@ -18,9 +18,7 @@ class GameClient:
                         self.pos_players[2] = [i,j]
                     case 252:
                         self.pos_players[3] = [i,j]
-        for i in range(3):
-            if self.pos_players[3-i] == []:
-                del self.pos_players[3-i]
+        self.pos_players = list(filter(lambda x : x != [], self.pos_players))
 
 
 
