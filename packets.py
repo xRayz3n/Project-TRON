@@ -89,8 +89,9 @@ class Packets:
                 length = 1
             case "U":
                 length = 4
-            
-        to_decode += target.recv(length)
+        
+        for i in range(length):
+            to_decode += target.recv(1)
         return Packets.decode(to_decode)
         #except: return ("I", "disconnect")
 
