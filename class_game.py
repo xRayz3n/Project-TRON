@@ -148,7 +148,3 @@ class Game:
         player.state = "dead"
         print(f"{player.name} is dead!")
         #to do : send a message to the players that he is dead (to play animation + other triggers)
-
-    def Start_Updating(self):
-        while True:
-            time.sleep(1/self.speed)

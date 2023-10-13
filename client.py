@@ -79,6 +79,10 @@ def Take_inputs(sck):
 
 def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : int):
     #print(f"type = {type}, x = {x}, y = {y}, size =  {cell_size}")
+    if type >= 0 :
+        width = 0
+    else :
+        width = 2
     match type :
         case 0 : #Free space
             color = (0,0,0)
@@ -94,7 +98,7 @@ def Render_cell(type : int, x : int , y : int, screen : pg.display, cell_size : 
             color = (0,255,255)
         case _ : 
             color = (255,255,255)
-    pg.draw.rect(screen, color , pg.Rect(x,y,cell_size,cell_size))
+    pg.draw.rect(screen, color , pg.Rect(x,y,cell_size,cell_size), width)
                                          
 def Render_game(screen : pg.display , matrix : list[list]) -> None :
     screen.fill((0,0,0))
