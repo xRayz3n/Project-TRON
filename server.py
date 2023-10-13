@@ -80,7 +80,6 @@ if __name__ == '__main__':
                 Broadcast_ToAllPlayers(f"\n{i}...", 'I')
                 time.sleep(1)
             Broadcast_ToAllPlayers("Game started!", "I")
-            Broadcast_ToAllPlayers(1, "T")
             for i in range(len(playerList)):
                 playerList[i].number = i
                 packet = packets.Packets(i+1, package_type='T')

@@ -145,9 +145,9 @@ class Game:
     def You_are_dead(self, player : player.Player):
         player.state = "dead"
         for i in range(len(self.map)):
-                    for j in range(len(self.map[i])):
-                        if self.map[i][j] == playerInfo.number or self.map[i][j] == -playerInfo.number :
-                            self.map[i][j] = 0
+            for j in range(len(self.map[i])):
+                if self.map[i][j] == player.number or self.map[i][j] == -player.number :
+                    self.map[i][j] = 0
         for playerInfo in self.playerList:
             self.force_refresh_map[playerInfo.client_addr] = True
             message = (f"{player.name} is dead!")
