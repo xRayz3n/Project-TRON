@@ -149,10 +149,18 @@ class Game:
             for j in range(len(self.map[i])):
                 if self.map[i][j] == player.number or self.map[i][j] == -player.number :
                     self.map[i][j] = 0
-        for playerInfo in self.playerList: #send to everyone when a player dies
+
+        remaning_players = list(filter(lambda x : x.status == "alive", self.playerList))
+
+        for playerInfo in self.playerList:
             self.force_refresh_map[playerInfo.client_addr] = True
             message = (f"{player.name} is dead!")
             packet = packets.Packets(message, package_type='I')
             packet.send(playerInfo.client_socket)
+            
+            if len(remaning_players) == 1:
+                message = (f"{remaning_players[0].name} has won !!!")
+                packet = packets.Packets(message, package_type='I')
+                packet.send(playerInfo.client_socket)
 
         #to do : send a message to the players that he is dead (to play animation + other triggers)
