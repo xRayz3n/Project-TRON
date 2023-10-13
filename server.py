@@ -70,7 +70,7 @@ def Broadcast_ToAllPlayers(message, type):
 
 if __name__ == '__main__':
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('0.0.0.0', 8889))
+    server_socket.bind(('0.0.0.0', 8888))
     threading.Thread(group=None, target=OpenConnections).start()
     while True:
         if all(aPlayer.state == "ready" for aPlayer in playerList) and len(playerList)>1:
@@ -80,7 +80,7 @@ if __name__ == '__main__':
                 Broadcast_ToAllPlayers(f"\n{i}...", 'I')
                 time.sleep(1)
             Broadcast_ToAllPlayers("Game started!", "I")
-            for i in range(len(playerList)):
+            for i in range(len(playerList)): #send to all players a start package
                 playerList[i].number = i+1
                 packet = packets.Packets(i+1, package_type='T')
                 packet.send(playerList[i].client_socket)

@@ -20,7 +20,7 @@ class Game:
                      -free spaces are represented by 0s
         """
         self.playerList = playersList
-
+        self.gameIsOn = True
         nb_players = len(playersList)
 
         pos_players = [ [int(map_size[0]/2),1], [int(map_size[0]/2),map_size[1]] ]
@@ -95,7 +95,7 @@ class Game:
         counter = threading.local()
         counter.custom = 0
         self.Broadcast_map_to_player(player)
-        while True:
+        while self.gameIsOn:
             i = self.playerList.index(player)
             if player.state != "dead":
                 x = self.pos_players[i][0]
@@ -150,7 +150,7 @@ class Game:
                 if self.map[i][j] == player.number or self.map[i][j] == -player.number :
                     self.map[i][j] = 0
 
-        remaning_players = list(filter(lambda x : x.state == "alive", self.playerList))
+        remaining_players = list(filter(lambda x : x.state == "alive", self.playerList))
 
         for playerInfo in self.playerList:
             self.force_refresh_map[playerInfo.client_addr] = True
@@ -158,8 +158,9 @@ class Game:
             packet = packets.Packets(message, package_type='I')
             packet.send(playerInfo.client_socket)
             
-            if len(remaning_players) == 1:
-                message = (f"{remaning_players[0].name} has won !!!")
+            if len(remaining_players) == 1:
+                self.gameIsOn = False
+                message = (f"{remaining_players[0].name} has won !!!")
                 packet = packets.Packets(message, package_type='I')
                 packet.send(playerInfo.client_socket)
                 close_packet = packets.Packets(100, package_type='T')
