@@ -39,15 +39,19 @@ def ReceiveMsg(sck):
             break
         if status == "T":
             GameClient(sck, message)
-        print(message)
+        if status == 'I':
+            print(message)
         
     
 def GameClient(sck, playerNumber):
+    gameIsOn = threading.Event()
+    gameIsOn.set()
     pg.init()
-    threading.Thread(group=None, target=Take_inputs, args=[sck]).start()
+    thread = threading.Thread(group=None, target=Take_inputs, args=[sck, gameIsOn])
+    thread.start()
     screen = pg.display.set_mode((1000, 1000))
     game = gameclient.GameClient()
-    while True:
+    while gameIsOn.is_set():
         status, packet = packets.Packets.receive(sck)
         if status == 'M':
             game.map = packet
@@ -57,11 +61,14 @@ def GameClient(sck, playerNumber):
             Render_game(screen, game.map, playerNumber)
         if status == 'I':
             print(packet)
+        if status == 'T' and packet == 100:
+            gameIsOn.clear()
+            pg.quit()
 
 
+def Take_inputs(sck, gameIsOn):
 
-def Take_inputs(sck):
-    while True:
+    while gameIsOn.is_set():
         direction = " "
         for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
@@ -117,5 +124,5 @@ if __name__ == '__main__':
     ip = input("IP address: ")
     port = input("Port: ")
     #sck = Connect(ip, int(port))
-    sck = Connect('172.21.72.112', 8888)
+    sck = Connect('172.21.72.112', 8889)
     Lobby(sck)

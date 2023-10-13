@@ -162,5 +162,7 @@ class Game:
                 message = (f"{remaning_players[0].name} has won !!!")
                 packet = packets.Packets(message, package_type='I')
                 packet.send(playerInfo.client_socket)
+                close_packet = packets.Packets(100, package_type='T')
+                close_packet.send(playerInfo.client_socket)
 
         #to do : send a message to the players that he is dead (to play animation + other triggers)
