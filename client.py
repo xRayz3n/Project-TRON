@@ -46,11 +46,13 @@ def GameClient(sck):
     pg.init()
     threading.Thread(group=None, target=Take_inputs, args=[sck]).start()
     screen = pg.display.set_mode((1000, 1000))
+    game = gameclient.GameClient()
     while True:
         status, packet = packets.Packets.receive(sck)
         if status == 'M':
-            game = gameclient.GameClient(packet)
-        if status == 'U':
+            game.map = packet
+            game.GetPlayers_Positions()
+        if status == 'U' and game.map != []:
             game.Update_Positions(packet)
             Render_game(screen, game.map)
 

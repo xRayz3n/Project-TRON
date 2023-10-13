@@ -133,7 +133,7 @@ class Game:
                             self.You_are_dead(self.playerList[i])
             self.sended[i] = False
             self.Broadcast_directions_to_player(player)
-            if counter.custom > 100:
+            if counter.custom > 20:
                 self.Broadcast_map_to_player(player)
                 counter.custom = 0
                 print(f"map sent to {player.name}")

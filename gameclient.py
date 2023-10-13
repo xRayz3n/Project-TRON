@@ -2,13 +2,14 @@ import pygame as pg
 
 
 class GameClient:
-    def __init__(self, map):
-        self.map = map
+    def __init__(self):
+        self.map = []
         self.pos_players = [[],[],[],[]]
 
-        for i in range(len(map)): #get the position of the players from initial map
-            for j in range(len(map[i])):
-                match map[i][j]:
+    def GetPlayers_Positions(self):
+        for i in range(len(self.map)): #get the position of the players from initial map
+            for j in range(len(self.map[i])):
+                match self.map[i][j]:
                     case 255:
                         self.pos_players[0] = [i,j] 
                     case 254:
@@ -17,10 +18,10 @@ class GameClient:
                         self.pos_players[2] = [i,j]
                     case 252:
                         self.pos_players[3] = [i,j]
-        for i in range(3):
-            if self.pos_players[3-i] == []:
-                del self.pos_players[3-i]
-    
+        self.pos_players = list(filter(lambda x : x != [], self.pos_players))
+
+
+
     def Update_Positions(self, direction_players) -> None:
         for i in range(len(self.pos_players)):
             x = self.pos_players[i][0]
